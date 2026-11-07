@@ -100,6 +100,7 @@ dependencies {
     // Unity Ads
     implementation("com.unity3d.ads:unity-ads:4.11.0") {
         exclude(group = "io.insert-koin", module = "koin-bom")
+        exclude(group = "io.insert-koin", module = "koin-annotations-bom")
     }
 
     // Start.io (StartApp)
