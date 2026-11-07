@@ -6,10 +6,6 @@ plugins {
     kotlin("kapt")
 }
 
-// Enable AndroidX
-extra["android.useAndroidX"] = true
-extra["android.enableJetifier"] = true
-
 android {
     namespace = "com.htmltoapk.builder"
     compileSdk = 34

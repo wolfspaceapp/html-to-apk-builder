@@ -49,7 +49,7 @@ jobs:
           unzip -l gradle/wrapper/gradle-wrapper.jar | head -20
 
       - name: Build Release APK
-        run: ./gradlew assembleRelease
+        run: ./gradlew assembleRelease -Pandroid.useAndroidX=true -Pandroid.enableJetifier=true
 
       - name: Verify APK
         run: |
