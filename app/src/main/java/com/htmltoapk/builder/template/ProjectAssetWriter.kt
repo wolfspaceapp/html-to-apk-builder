@@ -10,6 +10,8 @@ import com.htmltoapk.builder.model.WebViewSettings
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
 import java.io.File
 import java.io.FileOutputStream
 import java.io.FileWriter
@@ -56,102 +58,103 @@ object ProjectAssetWriter {
     }
 
     private fun writeConfig(assetsDir: File, project: Project) {
-        val config = mapOf(
-            "packageName" to project.packageName,
-            "appName" to project.appName.ifBlank { project.name },
-            "versionCode" to project.versionCode,
-            "versionName" to project.versionName,
-            "orientation" to project.orientation,
-            "themeColor" to project.primaryColor,
-            "showActionBar" to project.showActionBar,
-            "showHeader" to project.showHeader,
-            "showWatermark" to project.showWatermark,
-            "keepScreenOn" to project.keepScreenOn,
-            "desktopMode" to project.desktopMode,
-            "deepLinkScheme" to project.deepLinkScheme,
-            "permissions" to project.permissions,
-            "webViewSettings" to json.decodeFromString<Map<String, Any>>(json.encodeToString(project.webViewSettings)),
-            "admob" to mapOf(
-                "enabled" to project.admob.enabled,
-                "appId" to project.admob.appId,
-                "bannerEnabled" to project.admob.bannerEnabled,
-                "bannerUnitId" to project.admob.bannerUnitId,
-                "bannerPosition" to project.admob.bannerPosition,
-                "showBannerOnStart" to project.admob.showBannerOnStart,
-                "interstitialEnabled" to project.admob.interstitialEnabled,
-                "interstitialUnitId" to project.admob.interstitialUnitId,
-                "interstitialIntervalSeconds" to project.admob.interstitialIntervalSeconds,
-                "interstitialPageCount" to project.admob.interstitialPageCount,
-                "rewardedEnabled" to project.admob.rewardedEnabled,
-                "rewardedUnitId" to project.admob.rewardedUnitId,
-                "autoLoadInterstitial" to project.admob.autoLoadInterstitial,
-                "autoLoadRewarded" to project.admob.autoLoadRewarded,
-                "useTestAds" to project.admob.useTestAds,
-                "testDeviceIds" to project.admob.testDeviceIds,
-                "maxAdContentRating" to project.admob.maxAdContentRating,
-                "childDirectedTreatment" to project.admob.childDirectedTreatment,
-                "underAgeOfConsent" to project.admob.underAgeOfConsent
-            ),
-            "unityAds" to mapOf(
-                "enabled" to project.unityAds.enabled,
-                "gameId" to project.unityAds.gameId,
-                "testMode" to project.unityAds.testMode,
-                "bannerEnabled" to project.unityAds.bannerEnabled,
-                "bannerPlacementId" to project.unityAds.bannerPlacementId,
-                "bannerPosition" to project.unityAds.bannerPosition,
-                "interstitialEnabled" to project.unityAds.interstitialEnabled,
-                "interstitialPlacementId" to project.unityAds.interstitialPlacementId,
-                "interstitialIntervalSeconds" to project.unityAds.interstitialIntervalSeconds,
-                "interstitialPageCount" to project.unityAds.interstitialPageCount,
-                "rewardedEnabled" to project.unityAds.rewardedEnabled,
-                "rewardedPlacementId" to project.unityAds.rewardedPlacementId,
-                "autoLoadInterstitial" to project.unityAds.autoLoadInterstitial,
-                "autoLoadRewarded" to project.unityAds.autoLoadRewarded,
-                "consentRequired" to project.unityAds.consentRequired,
-                "metadata" to project.unityAds.metadata
-            ),
-            "startApp" to mapOf(
-                "enabled" to project.startApp.enabled,
-                "appId" to project.startApp.appId,
-                "devId" to project.startApp.devId,
-                "testMode" to project.startApp.testMode,
-                "bannerEnabled" to project.startApp.bannerEnabled,
-                "bannerType" to project.startApp.bannerType,
-                "bannerPosition" to project.startApp.bannerPosition,
-                "interstitialEnabled" to project.startApp.interstitialEnabled,
-                "interstitialIntervalSeconds" to project.startApp.interstitialIntervalSeconds,
-                "interstitialPageCount" to project.startApp.interstitialPageCount,
-                "rewardedEnabled" to project.startApp.rewardedEnabled,
-                "splashEnabled" to project.startApp.splashEnabled,
-                "splashTheme" to project.startApp.splashTheme,
-                "splashOrientation" to project.startApp.splashOrientation,
-                "autoLoadInterstitial" to project.startApp.autoLoadInterstitial,
-                "autoLoadRewarded" to project.startApp.autoLoadRewarded,
-                "preloadSplash" to project.startApp.preloadSplash,
-                "consentRequired" to project.startApp.consentRequired,
-                "metadata" to project.startApp.metadata
-            ),
-            "billing" to mapOf(
-                "enabled" to project.billing.enabled,
-                "type" to project.billing.type,
-                "productId" to project.billing.productId,
-                "productName" to project.billing.productName,
-                "productDescription" to project.billing.productDescription,
-                "subscriptionId" to project.billing.subscriptionId,
-                "subscriptionPeriod" to project.billing.subscriptionPeriod,
-                "freeTrialDays" to project.billing.freeTrialDays,
-                "introductoryPrice" to project.billing.introductoryPrice,
-                "acknowledge" to project.billing.acknowledge,
-                "autoConsume" to project.billing.autoConsume,
-                "enablePendingPurchases" to project.billing.enablePendingPurchases,
-                "testMode" to project.billing.testMode
-            ),
-            "ump" to mapOf(
-                "debugEnabled" to project.ump.debugEnabled,
-                "debugGeography" to project.ump.debugGeography,
-                "testDeviceIds" to project.ump.testDeviceIds
-            )
-        )
+        // Build JsonObject manually to avoid Map<String, Any> serialization issues
+        val config = buildJsonObject {
+            put("packageName", JsonPrimitive(project.packageName))
+            put("appName", JsonPrimitive(project.appName.ifBlank { project.name }))
+            put("versionCode", JsonPrimitive(project.versionCode))
+            put("versionName", JsonPrimitive(project.versionName))
+            put("orientation", JsonPrimitive(project.orientation))
+            put("themeColor", JsonPrimitive(project.primaryColor))
+            put("showActionBar", JsonPrimitive(project.showActionBar))
+            put("showHeader", JsonPrimitive(project.showHeader))
+            put("showWatermark", JsonPrimitive(project.showWatermark))
+            put("keepScreenOn", JsonPrimitive(project.keepScreenOn))
+            put("desktopMode", JsonPrimitive(project.desktopMode))
+            put("deepLinkScheme", JsonPrimitive(project.deepLinkScheme))
+            put("permissions", JsonPrimitive(project.permissions))
+            put("webViewSettings", json.parseToJsonElement(project.webViewSettings))
+            put("admob", buildJsonObject {
+                put("enabled", JsonPrimitive(project.admob.enabled))
+                put("appId", JsonPrimitive(project.admob.appId))
+                put("bannerEnabled", JsonPrimitive(project.admob.bannerEnabled))
+                put("bannerUnitId", JsonPrimitive(project.admob.bannerUnitId))
+                put("bannerPosition", JsonPrimitive(project.admob.bannerPosition))
+                put("showBannerOnStart", JsonPrimitive(project.admob.showBannerOnStart))
+                put("interstitialEnabled", JsonPrimitive(project.admob.interstitialEnabled))
+                put("interstitialUnitId", JsonPrimitive(project.admob.interstitialUnitId))
+                put("interstitialIntervalSeconds", JsonPrimitive(project.admob.interstitialIntervalSeconds))
+                put("interstitialPageCount", JsonPrimitive(project.admob.interstitialPageCount))
+                put("rewardedEnabled", JsonPrimitive(project.admob.rewardedEnabled))
+                put("rewardedUnitId", JsonPrimitive(project.admob.rewardedUnitId))
+                put("autoLoadInterstitial", JsonPrimitive(project.admob.autoLoadInterstitial))
+                put("autoLoadRewarded", JsonPrimitive(project.admob.autoLoadRewarded))
+                put("useTestAds", JsonPrimitive(project.admob.useTestAds))
+                put("testDeviceIds", JsonPrimitive(project.admob.testDeviceIds))
+                put("maxAdContentRating", JsonPrimitive(project.admob.maxAdContentRating))
+                put("childDirectedTreatment", JsonPrimitive(project.admob.childDirectedTreatment))
+                put("underAgeOfConsent", JsonPrimitive(project.admob.underAgeOfConsent))
+            })
+            put("unityAds", buildJsonObject {
+                put("enabled", JsonPrimitive(project.unityAds.enabled))
+                put("gameId", JsonPrimitive(project.unityAds.gameId))
+                put("testMode", JsonPrimitive(project.unityAds.testMode))
+                put("bannerEnabled", JsonPrimitive(project.unityAds.bannerEnabled))
+                put("bannerPlacementId", JsonPrimitive(project.unityAds.bannerPlacementId))
+                put("bannerPosition", JsonPrimitive(project.unityAds.bannerPosition))
+                put("interstitialEnabled", JsonPrimitive(project.unityAds.interstitialEnabled))
+                put("interstitialPlacementId", JsonPrimitive(project.unityAds.interstitialPlacementId))
+                put("interstitialIntervalSeconds", JsonPrimitive(project.unityAds.interstitialIntervalSeconds))
+                put("interstitialPageCount", JsonPrimitive(project.unityAds.interstitialPageCount))
+                put("rewardedEnabled", JsonPrimitive(project.unityAds.rewardedEnabled))
+                put("rewardedPlacementId", JsonPrimitive(project.unityAds.rewardedPlacementId))
+                put("autoLoadInterstitial", JsonPrimitive(project.unityAds.autoLoadInterstitial))
+                put("autoLoadRewarded", JsonPrimitive(project.unityAds.autoLoadRewarded))
+                put("consentRequired", JsonPrimitive(project.unityAds.consentRequired))
+                put("metadata", JsonPrimitive(project.unityAds.metadata))
+            })
+            put("startApp", buildJsonObject {
+                put("enabled", JsonPrimitive(project.startApp.enabled))
+                put("appId", JsonPrimitive(project.startApp.appId))
+                put("devId", JsonPrimitive(project.startApp.devId))
+                put("testMode", JsonPrimitive(project.startApp.testMode))
+                put("bannerEnabled", JsonPrimitive(project.startApp.bannerEnabled))
+                put("bannerType", JsonPrimitive(project.startApp.bannerType))
+                put("bannerPosition", JsonPrimitive(project.startApp.bannerPosition))
+                put("interstitialEnabled", JsonPrimitive(project.startApp.interstitialEnabled))
+                put("interstitialIntervalSeconds", JsonPrimitive(project.startApp.interstitialIntervalSeconds))
+                put("interstitialPageCount", JsonPrimitive(project.startApp.interstitialPageCount))
+                put("rewardedEnabled", JsonPrimitive(project.startApp.rewardedEnabled))
+                put("splashEnabled", JsonPrimitive(project.startApp.splashEnabled))
+                put("splashTheme", JsonPrimitive(project.startApp.splashTheme))
+                put("splashOrientation", JsonPrimitive(project.startApp.splashOrientation))
+                put("autoLoadInterstitial", JsonPrimitive(project.startApp.autoLoadInterstitial))
+                put("autoLoadRewarded", JsonPrimitive(project.startApp.autoLoadRewarded))
+                put("preloadSplash", JsonPrimitive(project.startApp.preloadSplash))
+                put("consentRequired", JsonPrimitive(project.startApp.consentRequired))
+                put("metadata", JsonPrimitive(project.startApp.metadata))
+            })
+            put("billing", buildJsonObject {
+                put("enabled", JsonPrimitive(project.billing.enabled))
+                put("type", JsonPrimitive(project.billing.type))
+                put("productId", JsonPrimitive(project.billing.productId))
+                put("productName", JsonPrimitive(project.billing.productName))
+                put("productDescription", JsonPrimitive(project.billing.productDescription))
+                put("subscriptionId", JsonPrimitive(project.billing.subscriptionId))
+                put("subscriptionPeriod", JsonPrimitive(project.billing.subscriptionPeriod))
+                put("freeTrialDays", JsonPrimitive(project.billing.freeTrialDays))
+                put("introductoryPrice", JsonPrimitive(project.billing.introductoryPrice))
+                put("acknowledge", JsonPrimitive(project.billing.acknowledge))
+                put("autoConsume", JsonPrimitive(project.billing.autoConsume))
+                put("enablePendingPurchases", JsonPrimitive(project.billing.enablePendingPurchases))
+                put("testMode", JsonPrimitive(project.billing.testMode))
+            })
+            put("ump", buildJsonObject {
+                put("debugEnabled", JsonPrimitive(project.ump.debugEnabled))
+                put("debugGeography", JsonPrimitive(project.ump.debugGeography))
+                put("testDeviceIds", JsonPrimitive(project.ump.testDeviceIds))
+            })
+        }
 
         val configFile = File(assetsDir, "config.json")
         FileWriter(configFile).use { it.write(json.encodeToString(config)) }

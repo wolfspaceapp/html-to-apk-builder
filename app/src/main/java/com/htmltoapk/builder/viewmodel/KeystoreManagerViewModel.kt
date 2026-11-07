@@ -50,11 +50,11 @@ class KeystoreManagerViewModel(application: Application) : AndroidViewModel(appl
         }
     }
 
-    private fun unsetAllDefaults() {
+    private suspend fun unsetAllDefaults() {
         // This would need a DAO query to update all to false
         // For simplicity, we'll do it in a transaction
         database.runInTransaction {
-            val allKeystores = database.keystoreDao().getAllKeystores().firstOrNull() ?: return@runInTransaction
+            val allKeystores = database.keystoreDao().getAllKeystores().first() ?: return@runInTransaction
             allKeystores.forEach { ks ->
                 if (ks.isDefault) {
                     database.keystoreDao().update(ks.copy(isDefault = false))
