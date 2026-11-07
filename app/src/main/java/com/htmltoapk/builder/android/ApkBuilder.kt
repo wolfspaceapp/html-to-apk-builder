@@ -312,7 +312,9 @@ class ApkBuilder(private val workspace: File) {
 
     private fun addFileToZip(zipOut: ZipOutputStream, file: File, entryName: String) {
         zipOut.putNextEntry(ZipEntry(entryName))
-        file.copyTo(zipOut)
+        FileInputStream(file).use { input ->
+            input.copyTo(zipOut)
+        }
         zipOut.closeEntry()
     }
 
@@ -321,7 +323,9 @@ class ApkBuilder(private val workspace: File) {
             sourceDir.walkTopDown().filter { it.isFile }.forEach { file ->
                 val entryName = file.path.substring(sourceDir.path.length + 1)
                 zipOut.putNextEntry(ZipEntry(entryName))
-                file.copyTo(zipOut)
+                FileInputStream(file).use { input ->
+                    input.copyTo(zipOut)
+                }
                 zipOut.closeEntry()
             }
         }

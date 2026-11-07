@@ -5,14 +5,11 @@ import org.jf.baksmali.Baksmali
 import org.jf.dexlib2.Opcodes
 import org.jf.dexlib2.iface.ClassDef
 import org.jf.dexlib2.iface.DexFile
-import org.jf.dexlib2.writer.DexFileFactory
 import org.jf.smali.Smali
-import org.jf.util.ConsoleUtil
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.nio.file.Files
-import java.nio.file.Path
 
 class DexRepackager {
     companion object {
@@ -71,7 +68,7 @@ class DexRepackager {
             rewriteSmaliDirectory(tempDir, oldPackage, newPackage)
 
             // Step 3: Reassemble smali back to DEX using smali
-            val outputDexFile = File(dexDir, "${dexFile.name.stem}_repacked.dex")
+            val outputDexFile = File(dexFile.parentFile, "${dexFile.nameWithoutExtension}_repacked.dex")
             val smaliArgs = arrayOf(
                 "assemble",
                 "--output", outputDexFile.absolutePath,
