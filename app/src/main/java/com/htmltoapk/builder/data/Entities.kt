@@ -1,7 +1,6 @@
 package com.htmltoapk.builder.data
 
 import androidx.room.*
-import kotlinx.serialization.json.Json
 
 @Entity(tableName = "projects")
 data class ProjectEntity(
@@ -43,96 +42,7 @@ data class ProjectEntity(
     var autoIncrementVersionCode: Boolean = false,
     var createdAt: Long = System.currentTimeMillis(),
     var updatedAt: Long = System.currentTimeMillis()
-) {
-    fun toProject(): Project {
-        val json = Json { prettyPrint = true }
-        return Project(
-            id = id,
-            name = name,
-            packageName = packageName,
-            versionCode = versionCode,
-            versionName = versionName,
-            appName = appName,
-            contentSource = com.htmltoapk.builder.model.ContentSource.fromJson(json, contentSourceType, contentSourcePath, contentSourceUrl),
-            sourcePath = sourcePath,
-            sourceUrl = sourceUrl,
-            iconPath = iconPath,
-            splashPath = splashPath,
-            minSdk = minSdk,
-            targetSdk = targetSdk,
-            maxSdk = maxSdk,
-            orientation = orientation,
-            buildMode = buildMode,
-            outputFormat = outputFormat,
-            primaryColor = primaryColor,
-            showActionBar = showActionBar,
-            showHeader = showHeader,
-            showWatermark = showWatermark,
-            showCameraCutout = showCameraCutout,
-            keepScreenOn = keepScreenOn,
-            desktopMode = desktopMode,
-            deepLinkScheme = deepLinkScheme,
-            permissions = json.decodeFromString(permissionsJson),
-            webViewSettings = json.decodeFromString(webViewSettingsJson),
-            admob = json.decodeFromString(admobJson),
-            unityAds = json.decodeFromString(unityAdsJson),
-            startApp = json.decodeFromString(startAppJson),
-            billing = json.decodeFromString(billingJson),
-            ump = json.decodeFromString(umpJson),
-            keystoreId = keystoreId,
-            autoIncrementVersionCode = autoIncrementVersionCode,
-            createdAt = createdAt,
-            updatedAt = updatedAt
-        )
-    }
-
-    companion object {
-        private val json = Json { prettyPrint = true }
-
-        fun fromProject(project: Project): ProjectEntity {
-            return ProjectEntity(
-                id = project.id,
-                name = project.name,
-                packageName = project.packageName,
-                versionCode = project.versionCode,
-                versionName = project.versionName,
-                appName = project.appName,
-                contentSourceType = project.contentSource.type.name,
-                contentSourcePath = project.contentSource.path,
-                contentSourceUrl = project.contentSource.url,
-                sourcePath = project.sourcePath,
-                sourceUrl = project.sourceUrl,
-                iconPath = project.iconPath,
-                splashPath = project.splashPath,
-                minSdk = project.minSdk,
-                targetSdk = project.targetSdk,
-                maxSdk = project.maxSdk,
-                orientation = project.orientation,
-                buildMode = project.buildMode,
-                outputFormat = project.outputFormat,
-                primaryColor = project.primaryColor,
-                showActionBar = project.showActionBar,
-                showHeader = project.showHeader,
-                showWatermark = project.showWatermark,
-                showCameraCutout = project.showCameraCutout,
-                keepScreenOn = project.keepScreenOn,
-                desktopMode = project.desktopMode,
-                deepLinkScheme = project.deepLinkScheme,
-                permissionsJson = json.encodeToString(project.permissions),
-                webViewSettingsJson = json.encodeToString(project.webViewSettings),
-                admobJson = json.encodeToString(project.admob),
-                unityAdsJson = json.encodeToString(project.unityAds),
-                startAppJson = json.encodeToString(project.startApp),
-                billingJson = json.encodeToString(project.billing),
-                umpJson = json.encodeToString(project.ump),
-                keystoreId = project.keystoreId,
-                autoIncrementVersionCode = project.autoIncrementVersionCode,
-                createdAt = project.createdAt,
-                updatedAt = project.updatedAt
-            )
-        }
-    }
-}
+)
 
 @Entity(tableName = "keystores")
 data class KeystoreEntity(
