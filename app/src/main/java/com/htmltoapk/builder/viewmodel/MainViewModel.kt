@@ -14,6 +14,7 @@ import com.htmltoapk.builder.signing.ApkSigner
 import com.htmltoapk.builder.signing.SigningKey
 import com.htmltoapk.builder.signing.SigningKeyResolver
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.io.File
 

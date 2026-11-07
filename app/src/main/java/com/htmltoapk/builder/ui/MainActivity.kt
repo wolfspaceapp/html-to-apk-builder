@@ -46,22 +46,22 @@ class MainActivity : AppCompatActivity() {
     private fun setupObservers() {
         viewModel.projects.observe(this) { projects ->
             adapter.submitList(projects)
-            binding.emptyView.isVisible = projects.isEmpty()
-            binding.projectsRecyclerView.isVisible = projects.isNotEmpty()
+            binding.emptyView.visibility = if (projects.isEmpty()) View.VISIBLE else View.GONE
+            binding.projectsRecyclerView.visibility = if (projects.isNotEmpty()) View.VISIBLE else View.GONE
         }
 
         viewModel.buildState.observe(this) { state ->
             when (state) {
                 is MainViewModel.BuildState.Building -> {
-                    binding.progressBar.isVisible = true
+                    binding.progressBar.visibility = View.VISIBLE
                     binding.buildProgressText.text = state.message
                 }
                 is MainViewModel.BuildState.Success -> {
-                    binding.progressBar.isVisible = false
+                    binding.progressBar.visibility = View.GONE
                     Toast.makeText(this, "Build successful: ${state.outputFile.name}", Toast.LENGTH_LONG).show()
                 }
                 is MainViewModel.BuildState.Error -> {
-                    binding.progressBar.isVisible = false
+                    binding.progressBar.visibility = View.GONE
                     Toast.makeText(this, "Build failed: ${state.message}", Toast.LENGTH_LONG).show()
                 }
             }

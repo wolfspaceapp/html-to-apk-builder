@@ -139,3 +139,51 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun keystoreDao(): KeystoreDao
     abstract fun buildHistoryDao(): BuildHistoryDao
 }
+
+import kotlinx.serialization.json.Json
+
+fun ProjectEntity.toProject(): Project {
+    val json = Json { prettyPrint = true }
+    return Project(
+        id = id,
+        name = name,
+        packageName = packageName,
+        versionCode = versionCode,
+        versionName = versionName,
+        appName = appName,
+        contentSource = if (contentSourceType == "remote") {
+            Project.ContentSource.Remote(contentSourceUrl)
+        } else {
+            Project.ContentSource.Local(contentSourcePath.ifBlank { sourcePath })
+        },
+        sourcePath = sourcePath,
+        sourceUrl = sourceUrl,
+        iconPath = iconPath,
+        splashPath = splashPath,
+        minSdk = minSdk,
+        targetSdk = targetSdk,
+        maxSdk = maxSdk,
+        orientation = orientation,
+        buildMode = buildMode,
+        outputFormat = outputFormat,
+        primaryColor = primaryColor,
+        showActionBar = showActionBar,
+        showHeader = showHeader,
+        showWatermark = showWatermark,
+        showCameraCutout = showCameraCutout,
+        keepScreenOn = keepScreenOn,
+        desktopMode = desktopMode,
+        deepLinkScheme = deepLinkScheme,
+        permissions = json.decodeFromString(permissionsJson),
+        webViewSettings = json.decodeFromString(webViewSettingsJson),
+        admob = json.decodeFromString(admobJson),
+        billing = json.decodeFromString(billingJson),
+        ump = json.decodeFromString(umpJson),
+        unityAds = json.decodeFromString(unityAdsJson),
+        startApp = json.decodeFromString(startAppJson),
+        keystoreId = keystoreId,
+        autoIncrementVersionCode = autoIncrementVersionCode,
+        createdAt = createdAt,
+        updatedAt = updatedAt
+    )
+}

@@ -62,8 +62,8 @@ class KeystoreManagerActivity : AppCompatActivity() {
     private fun setupObservers() {
         viewModel.keystores.observe(this) { keystores ->
             adapter.submitList(keystores)
-            binding.emptyView.isVisible = keystores.isEmpty()
-            binding.keystoreRecyclerView.isVisible = keystores.isNotEmpty()
+            binding.emptyView.visibility = if (keystores.isEmpty()) View.VISIBLE else View.GONE
+            binding.keystoreRecyclerView.visibility = if (keystores.isNotEmpty()) View.VISIBLE else View.GONE
         }
     }
 

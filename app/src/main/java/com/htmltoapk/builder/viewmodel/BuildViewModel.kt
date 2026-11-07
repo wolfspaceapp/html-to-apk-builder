@@ -8,6 +8,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import com.htmltoapk.builder.HtmlToApkApplication
 import com.htmltoapk.builder.data.AppDatabase
 import com.htmltoapk.builder.data.BuildHistoryEntity
@@ -18,8 +19,11 @@ import com.htmltoapk.builder.signing.ApkSigner
 import com.htmltoapk.builder.signing.SigningKey
 import com.htmltoapk.builder.signing.SigningKeyResolver
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+import kotlin.io.path.stem
 import java.io.File
 
 class BuildViewModel(application: Application) : AndroidViewModel(application) {

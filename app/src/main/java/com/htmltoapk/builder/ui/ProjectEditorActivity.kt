@@ -18,13 +18,15 @@ import com.htmltoapk.builder.data.AppDatabase
 import com.htmltoapk.builder.data.KeystoreEntity
 import com.htmltoapk.builder.data.ProjectEntity
 import com.htmltoapk.builder.databinding.ActivityProjectEditorBinding
+import com.htmltoapk.builder.model.AdMobSettings
 import com.htmltoapk.builder.model.BuildConfiguration
 import com.htmltoapk.builder.model.ContentSource
-import com.htmltoapk.builder.model.UnityAdsSettings
 import com.htmltoapk.builder.model.StartAppSettings
+import com.htmltoapk.builder.model.UnityAdsSettings
 import com.htmltoapk.builder.viewmodel.ProjectEditorViewModel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import kotlinx.serialization.json.Json
 import java.io.File
 
 class ProjectEditorActivity : AppCompatActivity() {
@@ -48,7 +50,7 @@ class ProjectEditorActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         projectId = intent.getLongExtra("project_id", 0)
-        isEditing = projectId != 0
+        isEditing = projectId != 0L
 
         setupToolbar()
         setupSpinners()
@@ -140,7 +142,7 @@ class ProjectEditorActivity : AppCompatActivity() {
 
     private fun loadProject() {
         lifecycleScope.launch {
-            val projectEntity = HtmlToApkApplication.getInstance().getDatabase().projectDao().getProjectById(projectId).await()
+            val projectEntity = HtmlToApkApplication.getInstance().getDatabase().projectDao().getProjectById(projectId).first()
             projectEntity?.let { populateFields(it) }
         }
     }
@@ -289,10 +291,10 @@ class ProjectEditorActivity : AppCompatActivity() {
 
         val versionCode = versionCodeStr.toIntOrNull() ?: 1
 
-        val json = kotlinx.serialization.json.Json { prettyPrint = true }
+        val json = Json { prettyPrint = true }
 
         // Build AdMob settings
-        val admob = com.htmltoapk.builder.model.AdMobSettings(
+        val admob = AdMobSettings(
             enabled = binding.switchAdMobEnabled.isChecked,
             appId = binding.etAdMobAppId.text.toString(),
             bannerEnabled = binding.etAdMobBannerId.text.toString().isNotBlank(),
@@ -332,7 +334,7 @@ class ProjectEditorActivity : AppCompatActivity() {
             versionCode = versionCode,
             versionName = versionName,
             appName = appName,
-            contentSourceType = binding.spinnerContentSource.selectedItem.toString().lowercase(),
+            contentSourceType = binding.spinnerContentSource.selectedItem?.toString()?.lowercase() ?: "local",
             contentSourcePath = binding.etSourcePath.text.toString(),
             contentSourceUrl = binding.etSourceUrl.text.toString(),
             sourcePath = binding.etSourcePath.text.toString(),
@@ -341,9 +343,9 @@ class ProjectEditorActivity : AppCompatActivity() {
             splashPath = binding.etSplashPath.text.toString(),
             minSdk = binding.etMinSdk.text.toString().toIntOrNull() ?: 24,
             targetSdk = binding.etTargetSdk.text.toString().toIntOrNull() ?: 34,
-            orientation = binding.spinnerOrientation.selectedItem.toString(),
-            buildMode = binding.spinnerBuildMode.selectedItem.toString(),
-            outputFormat = binding.spinnerOutputFormat.selectedItem.toString(),
+            orientation = binding.spinnerOrientation.selectedItem?.toString() ?: "portrait",
+            buildMode = binding.spinnerBuildMode.selectedItem?.toString() ?: "debug",
+            outputFormat = binding.spinnerOutputFormat.selectedItem?.toString() ?: "apk",
             primaryColor = binding.etPrimaryColor.text.toString(),
             showActionBar = binding.switchShowActionBar.isChecked,
             showHeader = binding.switchShowHeader.isChecked,
@@ -353,23 +355,25 @@ class ProjectEditorActivity : AppCompatActivity() {
             desktopMode = binding.switchDesktopMode.isChecked,
             deepLinkScheme = binding.etDeepLinkScheme.text.toString(),
             autoIncrementVersionCode = binding.switchAutoIncrementVersion.isChecked,
-            admobJson = json.encodeToString(admob),
-            unityAdsJson = json.encodeToString(unityAds),
-            startAppJson = json.encodeToString(startApp),
+            admobJson = json.encodeToString(AdMobSettings.serializer(), admob),
+            unityAdsJson = json.encodeToString(UnityAdsSettings.serializer(), unityAds),
+            startAppJson = json.encodeToString(StartAppSettings.serializer(), startApp),
             billingJson = "{}",
             umpJson = "{}",
             keystoreId = getSelectedKeystoreId(),
             updatedAt = System.currentTimeMillis()
         )
 
-        if (isEditing) {
-            HtmlToApkApplication.getInstance().getDatabase().projectDao().update(project)
-        } else {
-            HtmlToApkApplication.getInstance().getDatabase().projectDao().insert(project)
-        }
+        lifecycleScope.launch {
+            if (isEditing) {
+                HtmlToApkApplication.getInstance().getDatabase().projectDao().update(project)
+            } else {
+                HtmlToApkApplication.getInstance().getDatabase().projectDao().insert(project)
+            }
 
-        Toast.makeText(this, if (isEditing) "Project updated" else "Project created", Toast.LENGTH_SHORT).show()
-        finish()
+            Toast.makeText(this@ProjectEditorActivity, if (isEditing) "Project updated" else "Project created", Toast.LENGTH_SHORT).show()
+            finish()
+        }
     }
 
     private fun getSelectedKeystoreId(): Long? {

@@ -14,18 +14,23 @@ import java.util.zip.ZipInputStream
 object TemplateManager {
     private const val TAG = "TemplateManager"
     private const val TEMPLATE_ASSET_NAME = "template.apk"
-    private var instance: TemplateManager? = null
 
     @Volatile
     private var extractedTemplateDir: File? = null
 
     fun getInstance(context: Context): TemplateManager {
-        return instance ?: synchronized(this) {
-            instance ?: TemplateManager(context).also { instance = it }
-        }
+        return TemplateManagerHolder.INSTANCE
     }
 
-    private constructor(context: Context) {
+    private object TemplateManagerHolder {
+        val INSTANCE = TemplateManager()
+    }
+
+    private constructor() {
+        // Private constructor for singleton
+    }
+
+    fun initialize(context: Context) {
         extractTemplate(context)
     }
 

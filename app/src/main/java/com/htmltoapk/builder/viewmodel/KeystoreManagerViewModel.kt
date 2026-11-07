@@ -4,9 +4,11 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import com.htmltoapk.builder.HtmlToApkApplication
 import com.htmltoapk.builder.data.AppDatabase
 import com.htmltoapk.builder.data.KeystoreEntity
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class KeystoreManagerViewModel(application: Application) : AndroidViewModel(application) {

@@ -50,7 +50,7 @@ object TemplateResourceResolver {
 
     private fun buildReplacementMap(project: Project): Map<String, String> {
         val permissionsXml = generatePermissionsXml(project.permissions)
-        val webviewJson = Json { prettyPrint = true }.encodeToString(project.webViewSettings)
+        val webviewJson = Json { prettyPrint = true }.encodeToString(WebViewSettings.serializer(), project.webViewSettings)
 
         return mapOf(
             "PACKAGE_NAME" to project.packageName,

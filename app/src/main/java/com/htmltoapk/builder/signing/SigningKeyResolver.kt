@@ -2,7 +2,8 @@ package com.htmltoapk.builder.signing
 
 import android.content.Context
 import android.util.Log
-import com.htmltoapk.builder.model.BuildConfiguration
+import com.htmltoapk.builder.data.KeystoreEntity
+import com.htmltoapk.builder.HtmlToApkApplication
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -12,7 +13,7 @@ object SigningKeyResolver {
 
     suspend fun resolve(
         context: Context,
-        buildConfig: BuildConfiguration
+        buildConfig: com.htmltoapk.builder.model.BuildConfiguration
     ): SigningKey? {
         return withContext(Dispatchers.IO) {
             if (buildConfig.useCustomKeystore && buildConfig.keystorePath.isNotBlank()) {
@@ -25,6 +26,39 @@ object SigningKeyResolver {
             }
 
             // Try to find default keystore
+            findDefaultKeystore(context)
+        }
+    }
+
+    suspend fun resolveKeystore(keystoreId: Long): SigningKey? {
+        return withContext(Dispatchers.IO) {
+            val db = HtmlToApkApplication.getInstance().getDatabase()
+            val keystore = db.keystoreDao().getKeystoreById(keystoreId)
+            if (keystore != null) {
+                return@withContext SigningKey.fromKeystore(
+                    keystore.filePath,
+                    keystore.password,
+                    keystore.alias,
+                    keystore.keyPassword
+                )
+            }
+            null
+        }
+    }
+
+    suspend fun getDefaultKeystore(context: Context): SigningKey? {
+        return withContext(Dispatchers.IO) {
+            val db = HtmlToApkApplication.getInstance().getDatabase()
+            val keystore = db.keystoreDao().getDefaultKeystore()
+            if (keystore != null) {
+                return@withContext SigningKey.fromKeystore(
+                    keystore.filePath,
+                    keystore.password,
+                    keystore.alias,
+                    keystore.keyPassword
+                )
+            }
+            // Fallback to file-based search
             findDefaultKeystore(context)
         }
     }
