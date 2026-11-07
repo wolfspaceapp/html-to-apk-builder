@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import com.htmltoapk.builder.HtmlToApkApplication
 import com.htmltoapk.builder.data.AppDatabase
 import com.htmltoapk.builder.data.ProjectEntity
@@ -12,8 +13,8 @@ import com.htmltoapk.builder.model.BuildConfiguration
 import com.htmltoapk.builder.signing.ApkSigner
 import com.htmltoapk.builder.signing.SigningKey
 import com.htmltoapk.builder.signing.SigningKeyResolver
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
 import java.io.File
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
@@ -33,28 +34,28 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val buildState = MutableLiveData<BuildState>()
 
     fun insertProject(project: ProjectEntity) {
-        lifecycleScope.launch {
+        viewModelScope.launch {
             database.projectDao().insert(project)
         }
     }
 
     fun updateProject(project: ProjectEntity) {
-        lifecycleScope.launch {
+        viewModelScope.launch {
             database.projectDao().update(project)
         }
     }
 
     fun deleteProject(projectId: Long) {
-        lifecycleScope.launch {
+        viewModelScope.launch {
             database.projectDao().deleteById(projectId)
         }
     }
 
     fun buildProject(projectId: Long) {
-        lifecycleScope.launch {
+        viewModelScope.launch {
             buildState.postValue(BuildState.Building("Preparing build..."))
 
-            val projectEntity = database.projectDao().getProjectById(projectId)?.await()
+            val projectEntity = database.projectDao().getProjectById(projectId).first()
             if (projectEntity == null) {
                 buildState.postValue(BuildState.Error("Project not found"))
                 return@launch
@@ -113,7 +114,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                     buildDurationMs = 5000,
                     fileSizeBytes = outputFile.length()
                 )
-                database.buildHistoryDao().insert(history).await()
+                database.buildHistoryDao().insert(history)
 
             } catch (e: Exception) {
                 buildState.postValue(BuildState.Error("Build failed: ${e.message}"))
@@ -126,7 +127,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                     errorMessage = e.message,
                     buildDurationMs = 0
                 )
-                database.buildHistoryDao().insert(history).await()
+                database.buildHistoryDao().insert(history)
             }
         }
     }

@@ -43,7 +43,7 @@ class KeystoreManagerViewModel(application: Application) : AndroidViewModel(appl
     fun setDefaultKeystore(keystoreId: Long) {
         viewModelScope.launch {
             unsetAllDefaults()
-            val keystore = database.keystoreDao().getKeystoreById(keystoreId).await()
+            val keystore = database.keystoreDao().getKeystoreById(keystoreId)
             keystore?.let {
                 database.keystoreDao().update(it.copy(isDefault = true))
             }

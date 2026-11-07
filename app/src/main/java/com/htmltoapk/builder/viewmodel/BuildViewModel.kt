@@ -19,7 +19,6 @@ import com.htmltoapk.builder.signing.SigningKey
 import com.htmltoapk.builder.signing.SigningKeyResolver
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import java.io.File
 
@@ -48,7 +47,7 @@ class BuildViewModel(application: Application) : AndroidViewModel(application) {
 
     fun loadProject(projectId: Long) {
         viewModelScope.launch {
-            _project.value = database.projectDao().getProjectById(projectId).await()
+            _project.value = database.projectDao().getProjectById(projectId).first()
         }
     }
 
@@ -63,7 +62,7 @@ class BuildViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             _buildState.value = BuildState.Building("Preparing build...")
 
-            val projectEntity = database.projectDao().getProjectById(projectId).await()
+            val projectEntity = database.projectDao().getProjectById(projectId).first()
             if (projectEntity == null) {
                 _buildState.value = BuildState.Error("Project not found")
                 return@launch
@@ -110,7 +109,7 @@ class BuildViewModel(application: Application) : AndroidViewModel(application) {
                         buildDurationMs = 5000,
                         fileSizeBytes = outputFile.length()
                     )
-                    database.buildHistoryDao().insert(history).await()
+                    database.buildHistoryDao().insert(history)
                 } else {
                     _buildState.value = BuildState.Error("Build failed")
                 }
@@ -126,7 +125,7 @@ class BuildViewModel(application: Application) : AndroidViewModel(application) {
                     errorMessage = e.message,
                     buildDurationMs = 0
                 )
-                database.buildHistoryDao().insert(history).await()
+                database.buildHistoryDao().insert(history)
             }
         }
     }
@@ -152,7 +151,7 @@ class BuildViewModel(application: Application) : AndroidViewModel(application) {
                 // Try to sign if it's an APK
                 if (project.outputFormat == "apk") {
                     val signedFile = File(outputFile.parentFile, "${outputFile.name.stem}-signed.apk")
-                    val signed = apkSigner.signApk(outputFile, signingKey, signedFile).await()
+                    val signed = apkSigner.signApk(outputFile, signingKey, signedFile)
                     if (signed) {
                         outputFile.delete()
                         signedFile.renameTo(outputFile)

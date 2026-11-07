@@ -2,6 +2,7 @@ package com.htmltoapk.builder.data
 
 import androidx.room.*
 import com.htmltoapk.builder.model.Project
+import kotlinx.coroutines.flow.Flow
 import kotlinx.serialization.json.Json
 
 @Entity(tableName = "projects")
@@ -86,10 +87,10 @@ interface ProjectDao {
     suspend fun deleteById(id: Long)
 
     @Query("SELECT * FROM projects ORDER BY updatedAt DESC")
-    suspend fun getAllProjects(): List<ProjectEntity>
+    fun getAllProjects(): Flow<List<ProjectEntity>>
 
     @Query("SELECT * FROM projects WHERE id = :id")
-    suspend fun getProjectById(id: Long): ProjectEntity?
+    fun getProjectById(id: Long): Flow<ProjectEntity?>
 
     @Query("SELECT * FROM projects WHERE packageName = :packageName")
     suspend fun getProjectByPackageName(packageName: String): ProjectEntity?
@@ -107,7 +108,7 @@ interface KeystoreDao {
     suspend fun delete(keystore: KeystoreEntity)
 
     @Query("SELECT * FROM keystores ORDER BY createdAt DESC")
-    suspend fun getAllKeystores(): List<KeystoreEntity>
+    fun getAllKeystores(): Flow<List<KeystoreEntity>>
 
     @Query("SELECT * FROM keystores WHERE isDefault = 1")
     suspend fun getDefaultKeystore(): KeystoreEntity?
@@ -122,10 +123,10 @@ interface BuildHistoryDao {
     suspend fun insert(history: BuildHistoryEntity): Long
 
     @Query("SELECT * FROM build_history WHERE projectId = :projectId ORDER BY createdAt DESC LIMIT 50")
-    suspend fun getHistoryForProject(projectId: Long): List<BuildHistoryEntity>
+    fun getHistoryForProject(projectId: Long): Flow<List<BuildHistoryEntity>>
 
     @Query("SELECT * FROM build_history ORDER BY createdAt DESC LIMIT 100")
-    suspend fun getRecentBuilds(): List<BuildHistoryEntity>
+    fun getRecentBuilds(): Flow<List<BuildHistoryEntity>>
 }
 
 @Database(
