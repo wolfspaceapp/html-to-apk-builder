@@ -26,6 +26,10 @@ DEFAULT_JVM_OPTS='"-Xmx64m" "-Xms64m"'
 APP_NAME="Gradle"
 APP_BASE_NAME=${0##*/}
 
+# Resolve the location of this script to find APP_HOME
+# (from https://docs.gradle.org/current/userguide/gradle_wrapper.html)
+APP_HOME=$(cd "$(dirname "$0")" && pwd -P)
+
 # Use the maximum available, or set MAX_FD != -1 to use that value.
 MAX_FD="maximum"
 
