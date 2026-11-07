@@ -98,7 +98,9 @@ dependencies {
     implementation("org.bouncycastle:bcpkix-jdk18on:1.78")
 
     // Unity Ads
-    implementation("com.unity3d.ads:unity-ads:4.11.0")
+    implementation("com.unity3d.ads:unity-ads:4.11.0") {
+        exclude(group = "io.insert-koin", module = "koin-bom")
+    }
 
     // Start.io (StartApp)
     implementation("com.startapp:inapp-sdk:4.11.0")
