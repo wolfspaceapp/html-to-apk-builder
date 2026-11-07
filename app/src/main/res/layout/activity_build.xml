@@ -148,7 +148,7 @@
 
                     <ProgressBar
                         android:id="@+id/progressBar"
-                        style="@style/Widget.Material3.ProgressIndicator.Linear"
+                        style="@style/Widget.MaterialComponents.ProgressIndicator.Linear"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
