@@ -22,7 +22,9 @@ import java.util.zip.ZipOutputStream
 import javax.crypto.Cipher
 
 class ApkSigner {
-    private const val TAG = "ApkSigner"
+    companion object {
+        private const val TAG = "ApkSigner"
+    }
 
     // APK Signing Block magic
     private val APK_SIGNATURE_SCHEME_V2_BLOCK_ID = 0x7109871aL.toInt()
@@ -465,15 +467,15 @@ class ApkSigner {
             val process = ProcessBuilder(cmd).redirectErrorStream(true).start()
             val output = process.inputStream.bufferedReader().readText()
             val exitCode = process.waitFor()
-            Pair(exitCode == 0, output)
+            return Pair(exitCode == 0, output)
         } catch (e: Exception) {
-            Pair(false, e.message ?: "Verification failed")
+            return Pair(false, e.message ?: "Verification failed")
         }
     }
 
     private fun verifyInternally(apkFile: File): Pair<Boolean, String> {
         try {
-            ZipInputStream(FileInputStream(apkFile)).use { zipIn ->
+            return ZipInputStream(FileInputStream(apkFile)).use { zipIn ->
                 var entry: ZipEntry? = zipIn.nextEntry
                 var hasManifest = false
                 var hasSignature = false
@@ -499,7 +501,7 @@ class ApkSigner {
                 Pair(verified, details)
             }
         } catch (e: Exception) {
-            Pair(false, "Verification error: ${e.message}")
+            return Pair(false, "Verification error: ${e.message}")
         }
     }
 
