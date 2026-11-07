@@ -2,13 +2,6 @@ package com.htmltoapk.builder.data
 
 import androidx.room.*
 import com.htmltoapk.builder.model.Project
-import com.htmltoapk.builder.model.WebViewSettings
-import com.htmltoapk.builder.model.AdMobSettings
-import com.htmltoapk.builder.model.UnityAdsSettings
-import com.htmltoapk.builder.model.StartAppSettings
-import com.htmltoapk.builder.model.BillingSettings
-import com.htmltoapk.builder.model.UMPSettings
-import com.htmltoapk.builder.model.ContentSource
 import kotlinx.serialization.json.Json
 
 @Entity(tableName = "projects")
