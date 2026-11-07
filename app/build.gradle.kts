@@ -3,6 +3,7 @@ plugins {
     id("com.google.dagger.hilt.android")
     id("kotlinx-serialization")
     kotlin("android")
+    kotlin("kapt")
 }
 
 android {
