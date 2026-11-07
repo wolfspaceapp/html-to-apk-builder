@@ -42,6 +42,12 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x gradlew
 
+      - name: Debug wrapper files
+        run: |
+          ls -la gradle/wrapper/
+          file gradle/wrapper/gradle-wrapper.jar
+          unzip -l gradle/wrapper/gradle-wrapper.jar | head -20
+
       - name: Build Release APK
         run: ./gradlew assembleRelease
 
