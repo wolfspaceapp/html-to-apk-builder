@@ -14,7 +14,9 @@ import java.util.zip.ZipOutputStream
 import java.util.zip.ZipInputStream
 
 class ApkBuilder(private val workspace: File) {
-    private const val TAG = "ApkBuilder"
+    companion object {
+        private const val TAG = "ApkBuilder"
+    }
 
     private var aapt2Path: String? = null
 
@@ -166,7 +168,7 @@ class ApkBuilder(private val workspace: File) {
                     )
 
                     val process = ProcessBuilder(compileCmd).redirectErrorStream(true).start()
-                    val output = process.inputStream.readText()
+                    val output = process.inputStream.bufferedReader().readText()
                     val exitCode = process.waitFor()
 
                     if (exitCode != 0) {
@@ -214,7 +216,7 @@ class ApkBuilder(private val workspace: File) {
 
             // Execute link
             val linkProcess = ProcessBuilder(linkCmd).redirectErrorStream(true).start()
-            val linkOutput = linkProcess.inputStream.readText()
+            val linkOutput = linkProcess.inputStream.bufferedReader().readText()
             val linkExitCode = linkProcess.waitFor()
 
             if (linkExitCode != 0) {

@@ -15,9 +15,8 @@ import java.nio.file.Files
 import java.nio.file.Path
 
 class DexRepackager {
-    private const val TAG = "DexRepackager"
-
     companion object {
+        private const val TAG = "DexRepackager"
         @Volatile
         private var INSTANCE: DexRepackager? = null
 

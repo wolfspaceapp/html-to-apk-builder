@@ -3,7 +3,6 @@ package com.htmltoapk.builder
 import android.app.Application
 import androidx.room.Room
 import com.htmltoapk.builder.data.AppDatabase
-import com.jakewharton.timber.Timber
 import timber.log.Timber
 
 class HtmlToApkApplication : Application() {
@@ -22,9 +21,7 @@ class HtmlToApkApplication : Application() {
         INSTANCE = this
 
         // Initialize Timber for logging
-        if (BuildConfig.DEBUG) {
-            Timber.plant(Timber.DebugTree())
-        }
+        Timber.plant(Timber.DebugTree())
     }
 
     fun getDatabase(): AppDatabase {

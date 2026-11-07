@@ -11,8 +11,10 @@ import java.io.FileOutputStream
 import java.io.StringWriter
 
 class ResourceProcessor {
-    private const val TAG = "ResourceProcessor"
-    private const val ANDROID_NS = "http://schemas.android.com/apk/res/android"
+    companion object {
+        private const val TAG = "ResourceProcessor"
+        private const val ANDROID_NS = "http://schemas.android.com/apk/res/android"
+    }
 
     fun processManifest(manifestFile: File, project: Project): Boolean {
         return try {

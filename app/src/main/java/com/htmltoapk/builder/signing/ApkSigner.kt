@@ -99,7 +99,7 @@ class ApkSigner {
             )
 
             val process = ProcessBuilder(cmd).redirectErrorStream(true).start()
-            val output = process.inputStream.readText()
+            val output = process.inputStream.bufferedReader().readText()
             val exitCode = process.waitFor()
 
             if (exitCode != 0) {
@@ -463,7 +463,7 @@ class ApkSigner {
         try {
             val cmd = listOf(apksignerPath!!, "verify", "--verbose", apkFile.absolutePath)
             val process = ProcessBuilder(cmd).redirectErrorStream(true).start()
-            val output = process.inputStream.readText()
+            val output = process.inputStream.bufferedReader().readText()
             val exitCode = process.waitFor()
             Pair(exitCode == 0, output)
         } catch (e: Exception) {
@@ -509,7 +509,7 @@ class ApkSigner {
                 try {
                     val cmd = listOf(apksignerPath!!, "verify", "--print-certs", apkFile.absolutePath)
                     val process = ProcessBuilder(cmd).redirectErrorStream(true).start()
-                    process.inputStream.readText()
+                    process.inputStream.bufferedReader().readText()
                 } catch (e: Exception) {
                     "Error: ${e.message}"
                 }

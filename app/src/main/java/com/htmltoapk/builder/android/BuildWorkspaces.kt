@@ -5,15 +5,8 @@ import java.io.File
 import java.util.concurrent.atomic.AtomicInteger
 
 class BuildWorkspaces(private val baseDir: File) {
-    private const val TAG = "BuildWorkspaces"
-    private val activeWorkspaces = mutableSetOf<File>()
-    private val counter = AtomicInteger(0)
-
-    init {
-        baseDir.mkdirs()
-    }
-
     companion object {
+        private const val TAG = "BuildWorkspaces"
         @Volatile
         private var INSTANCE: BuildWorkspaces? = null
 
@@ -24,6 +17,13 @@ class BuildWorkspaces(private val baseDir: File) {
                 ).also { INSTANCE = it }
             }
         }
+    }
+
+    private val activeWorkspaces = mutableSetOf<File>()
+    private val counter = AtomicInteger(0)
+
+    init {
+        baseDir.mkdirs()
     }
 
     fun create(projectName: String): File {
