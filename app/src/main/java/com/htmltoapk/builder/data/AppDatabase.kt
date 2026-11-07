@@ -86,7 +86,7 @@ interface ProjectDao {
     suspend fun deleteById(id: Long)
 
     @Query("SELECT * FROM projects ORDER BY updatedAt DESC")
-    fun getAllProjects(): Flow<List<ProjectEntity>>
+    suspend fun getAllProjects(): List<ProjectEntity>
 
     @Query("SELECT * FROM projects WHERE id = :id")
     suspend fun getProjectById(id: Long): ProjectEntity?
@@ -107,7 +107,7 @@ interface KeystoreDao {
     suspend fun delete(keystore: KeystoreEntity)
 
     @Query("SELECT * FROM keystores ORDER BY createdAt DESC")
-    fun getAllKeystores(): Flow<List<KeystoreEntity>>
+    suspend fun getAllKeystores(): List<KeystoreEntity>
 
     @Query("SELECT * FROM keystores WHERE isDefault = 1")
     suspend fun getDefaultKeystore(): KeystoreEntity?
@@ -122,10 +122,10 @@ interface BuildHistoryDao {
     suspend fun insert(history: BuildHistoryEntity): Long
 
     @Query("SELECT * FROM build_history WHERE projectId = :projectId ORDER BY createdAt DESC LIMIT 50")
-    fun getHistoryForProject(projectId: Long): Flow<List<BuildHistoryEntity>>
+    suspend fun getHistoryForProject(projectId: Long): List<BuildHistoryEntity>
 
     @Query("SELECT * FROM build_history ORDER BY createdAt DESC LIMIT 100")
-    fun getRecentBuilds(): Flow<List<BuildHistoryEntity>>
+    suspend fun getRecentBuilds(): List<BuildHistoryEntity>
 }
 
 @Database(
