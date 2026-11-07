@@ -10,6 +10,10 @@ android {
     namespace = "com.htmltoapk.builder"
     compileSdk = 34
 
+    // Enable AndroidX
+    extraProperties["android.useAndroidX"] = true
+    extraProperties["android.enableJetifier"] = true
+
     defaultConfig {
         applicationId = "com.htmltoapk.builder"
         minSdk = 24
