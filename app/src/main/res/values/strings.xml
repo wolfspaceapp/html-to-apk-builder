@@ -1,0 +1,118 @@
+<resources>
+    <string name="app_name">HTML to APK Builder</string>
+    <string name="app_name_short">HTML2APK</string>
+
+    <!-- Main Activity -->
+    <string name="create_project">Create Project</string>
+    <string name="no_projects">No projects yet</string>
+    <string name="create_first_project">Create your first HTML to APK project</string>
+    <string name="settings">Settings</string>
+
+    <!-- Project Editor -->
+    <string name="new_project">New Project</string>
+    <string name="edit_project">Edit Project</string>
+    <string name="project_name">Project Name</string>
+    <string name="package_name">Package Name</string>
+    <string name="version_code">Version Code</string>
+    <string name="version_name">Version Name</string>
+    <string name="app_name_label">App Name</string>
+    <string name="min_sdk">Min SDK</string>
+    <string name="target_sdk">Target SDK</string>
+    <string name="primary_color">Primary Color</string>
+    <string name="deep_link_scheme">Deep Link Scheme</string>
+    <string name="source_path">Source Path</string>
+    <string name="source_url">Source URL</string>
+    <string name="icon_path">Icon Path</string>
+    <string name="splash_path">Splash Screen Path</string>
+    <string name="build_mode">Build Mode</string>
+    <string name="output_format">Output Format</string>
+    <string name="orientation">Orientation</string>
+    <string name="keystore">Keystore</string>
+    <string name="manage_keystores">Manage Keystores</string>
+
+    <!-- Features -->
+    <string name="auto_increment_version">Auto-increment Version Code</string>
+    <string name="show_action_bar">Show Action Bar</string>
+    <string name="show_header">Show Header</string>
+    <string name="show_watermark">Show Watermark</string>
+    <string name="show_camera_cutout">Show Camera Cutout</string>
+    <string name="keep_screen_on">Keep Screen On</string>
+    <string name="desktop_mode">Desktop Mode</string>
+
+    <!-- Build Activity -->
+    <string name="build_apk">Build APK</string>
+    <string name="build_aab">Build AAB</string>
+    <string name="open_output">Open Output</string>
+    <string name="build_history">Build History</string>
+    <string name="building">Building…</string>
+
+    <!-- Keystore Manager -->
+    <string name="keystore_manager">Keystore Manager</string>
+    <string name="add_keystore">Add Keystore</string>
+    <string name="edit_keystore">Edit Keystore</string>
+    <string name="keystore_name">Keystore Name</string>
+    <string name="key_alias">Key Alias</string>
+    <string name="keystore_file">Keystore File</string>
+    <string name="keystore_password">Keystore Password</string>
+    <string name="key_password">Key Password</string>
+    <string name="set_as_default">Set as Default</string>
+    <string name="delete_keystore">Delete Keystore</string>
+    <string name="no_keystores">No keystores configured</string>
+    <string name="add_keystore_description">Add a keystore to sign your APKs</string>
+
+    <!-- Settings -->
+    <string name="auto_increment_version_summary">Automatically increment version code on each build</string>
+    <string name="default_build_mode_summary">Select the default build mode for new projects</string>
+    <string name="default_output_format_summary">Select the default output format for new projects</string>
+    <string name="manage_templates_summary">View and manage custom templates</string>
+    <string name="import_template_summary">Import a custom template from file</string>
+    <string name="manage_keystores_summary">Create and manage signing keystores</string>
+    <string name="v1_signing_summary">Enable legacy JAR signing</string>
+    <string name="v2_signing_summary">Enable APK Signature Scheme v2</string>
+    <string name="v3_signing_summary">Enable APK Signature Scheme v3 with key rotation</string>
+    <string name="verbose_logging_summary">Enable detailed build logs</string>
+    <string name="clear_cache_summary">Remove temporary build files</string>
+    <string name="export_projects_summary">Export all projects to a backup file</string>
+    <string name="import_projects_summary">Import projects from a backup file</string>
+
+    <!-- Dialogs -->
+    <string name="confirm_delete">Are you sure you want to delete?</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="browse">Browse</string>
+    <string name="all_fields_required">All fields are required</string>
+
+    <!-- Content Source -->
+    <string name="content_source_type">Content Source Type</string>
+    <string name="local">Local</string>
+    <string name="remote">Remote</string>
+
+    <!-- Orientation -->
+    <string name="portrait">Portrait</string>
+    <string name="landscape">Landscape</string>
+    <string name="sensor">Sensor</string>
+
+    <!-- Monetization -->
+    <string name="monetization_admob">Monetización: AdMob</string>
+    <string name="monetization_unity_ads">Monetización: Unity Ads</string>
+    <string name="monetization_start_app">Monetización: Start.io (StartApp)</string>
+    <string name="enable_admob">Habilitar AdMob</string>
+    <string name="admob_app_id">AdMob App ID</string>
+    <string name="admob_banner_id">Banner Unit ID</string>
+    <string name="admob_interstitial_id">Interstitial Unit ID</string>
+    <string name="admob_rewarded_id">Rewarded Unit ID</string>
+    <string name="admob_test_ads">Usar anuncios de prueba (Test Ads)</string>
+
+    <string name="enable_unity_ads">Habilitar Unity Ads</string>
+    <string name="unity_ads_game_id">Unity Game ID</string>
+    <string name="unity_ads_banner_placement">Banner Placement ID</string>
+    <string name="unity_ads_interstitial_placement">Interstitial Placement ID</string>
+    <string name="unity_ads_rewarded_placement">Rewarded Placement ID</string>
+    <string name="unity_ads_test_mode">Modo prueba (Test Mode)</string>
+
+    <string name="enable_start_app">Habilitar Start.io</string>
+    <string name="start_app_app_id">StartApp App ID</string>
+    <string name="start_app_dev_id">StartApp Dev ID</string>
+    <string name="start_app_test_mode">Modo prueba (Test Mode)</string>
+</resources>

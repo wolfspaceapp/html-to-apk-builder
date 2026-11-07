@@ -1,0 +1,31 @@
+# Gradle
+.gradle/
+build/
+/*/build/
+/*/build.gradle.kts.d/
+
+# Local configuration
+local.properties
+gradle.properties
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Keystore
+*.jks
+*.keystore
+
+# Output
+*.apk
+*.aab

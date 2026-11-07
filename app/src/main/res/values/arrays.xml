@@ -1,0 +1,19 @@
+<resources>
+    <string-array name="build_modes">
+        <item>Debug</item>
+        <item>Release</item>
+    </string-array>
+    <string-array name="build_mode_values">
+        <item>debug</item>
+        <item>release</item>
+    </string-array>
+
+    <string-array name="output_formats">
+        <item>APK</item>
+        <item>AAB (Android App Bundle)</item>
+    </string-array>
+    <string-array name="output_format_values">
+        <item>apk</item>
+        <item>aab</item>
+    </string-array>
+</resources>

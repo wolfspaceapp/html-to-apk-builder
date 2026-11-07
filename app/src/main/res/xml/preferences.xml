@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="Build Settings">
+        <SwitchPreferenceCompat
+            app:key="pref_auto_increment_version"
+            app:title="Auto-increment Version Code"
+            app:summary="Automatically increment version code on each build"
+            app:defaultValue="false" />
+
+        <ListPreference
+            app:key="pref_default_build_mode"
+            app:title="Default Build Mode"
+            app:summary="Select the default build mode for new projects"
+            app:entries="@array/build_modes"
+            app:entryValues="@array/build_mode_values"
+            app:defaultValue="debug" />
+
+        <ListPreference
+            app:key="pref_default_output_format"
+            app:title="Default Output Format"
+            app:summary="Select the default output format for new projects"
+            app:entries="@array/output_formats"
+            app:entryValues="@array/output_format_values"
+            app:defaultValue="apk" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="Template Settings">
+        <Preference
+            app:key="pref_manage_templates"
+            app:title="Manage Templates"
+            app:summary="View and manage custom templates" />
+
+        <Preference
+            app:key="pref_import_template"
+            app:title="Import Template"
+            app:summary="Import a custom template from file" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="Signing">
+        <Preference
+            app:key="pref_manage_keystores"
+            app:title="Manage Keystores"
+            app:summary="Create and manage signing keystores" />
+
+        <SwitchPreferenceCompat
+            app:key="pref_v1_signing"
+            app:title="Enable V1 Signing (JAR)"
+            app:summary="Enable legacy JAR signing"
+            app:defaultValue="true" />
+
+        <SwitchPreferenceCompat
+            app:key="pref_v2_signing"
+            app:title="Enable V2 Signing (APK Signature Scheme v2)"
+            app:summary="Enable APK Signature Scheme v2"
+            app:defaultValue="true" />
+
+        <SwitchPreferenceCompat
+            app:key="pref_v3_signing"
+            app:title="Enable V3 Signing (APK Signature Scheme v3)"
+            app:summary="Enable APK Signature Scheme v3 with key rotation"
+            app:defaultValue="true" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="Advanced">
+        <SwitchPreferenceCompat
+            app:key="pref_verbose_logging"
+            app:title="Verbose Logging"
+            app:summary="Enable detailed build logs"
+            app:defaultValue="false" />
+
+        <Preference
+            app:key="pref_clear_cache"
+            app:title="Clear Build Cache"
+            app:summary="Remove temporary build files" />
+
+        <Preference
+            app:key="pref_export_projects"
+            app:title="Export Projects"
+            app:summary="Export all projects to a backup file" />
+
+        <Preference
+            app:key="pref_import_projects"
+            app:title="Import Projects"
+            app:summary="Import projects from a backup file" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="About">
+        <Preference
+            app:key="pref_version"
+            app:title="Version"
+            app:summary="1.0.0"
+            app:enabled="false" />
+
+        <Preference
+            app:key="pref_github"
+            app:title="GitHub Repository"
+            app:summary="View source code on GitHub" />
+
+        <Preference
+            app:key="pref_licenses"
+            app:title="Open Source Licenses"
+            app:summary="View licenses for third-party libraries" />
+    </PreferenceCategory>
+
+</PreferenceScreen>
