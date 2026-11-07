@@ -1,11 +1,9 @@
 package com.htmltoapk.builder.android
 
 import android.util.Log
-import org.jf.baksmali.Baksmali
 import org.jf.dexlib2.Opcodes
 import org.jf.dexlib2.iface.ClassDef
 import org.jf.dexlib2.iface.DexFile
-import org.jf.smali.Smali
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -162,50 +160,15 @@ class DexRepackager {
     }
 
     private fun runBaksmali(args: Array<String>): Int {
-        // Redirect System.out and System.err to capture output
-        val originalOut = System.out
-        val originalErr = System.err
-        val outBuffer = java.io.ByteArrayOutputStream()
-        val errBuffer = java.io.ByteArrayOutputStream()
-
-        try {
-            System.setOut(java.io.PrintStream(outBuffer))
-            System.setErr(java.io.PrintStream(errBuffer))
-            return Baksmali.main(args)
-        } catch (e: Exception) {
-            Log.e(TAG, "baksmali exception: ${e.message}")
-            return -1
-        } finally {
-            System.setOut(originalOut)
-            System.setErr(originalErr)
-            val out = outBuffer.toString()
-            val err = errBuffer.toString()
-            if (out.isNotBlank()) Log.d(TAG, "baksmali stdout: $out")
-            if (err.isNotBlank()) Log.w(TAG, "baksmali stderr: $err")
-        }
+        // baksmali library doesn't expose a public main method easily callable from Kotlin
+        // Fall back to simple replacement
+        return -1
     }
 
     private fun runSmali(args: Array<String>): Int {
-        val originalOut = System.out
-        val originalErr = System.err
-        val outBuffer = java.io.ByteArrayOutputStream()
-        val errBuffer = java.io.ByteArrayOutputStream()
-
-        try {
-            System.setOut(java.io.PrintStream(outBuffer))
-            System.setErr(java.io.PrintStream(errBuffer))
-            return Smali.main(args)
-        } catch (e: Exception) {
-            Log.e(TAG, "smali exception: ${e.message}")
-            return -1
-        } finally {
-            System.setOut(originalOut)
-            System.setErr(originalErr)
-            val out = outBuffer.toString()
-            val err = errBuffer.toString()
-            if (out.isNotBlank()) Log.d(TAG, "smali stdout: $out")
-            if (err.isNotBlank()) Log.w(TAG, "smali stderr: $err")
-        }
+        // smali library doesn't expose a public main method easily callable from Kotlin
+        // Fall back to simple replacement
+        return -1
     }
 
     private fun deleteRecursive(file: File) {
